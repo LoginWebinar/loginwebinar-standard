@@ -44,6 +44,7 @@ services:
   #     NEXT_PUBLIC_AUTH_URL: ${NEXT_PUBLIC_AUTH_URL}
   #     NEXT_PUBLIC_COOKIE_NAME: ${NEXT_PUBLIC_COOKIE_NAME}
   #     NEXT_PUBLIC_VIEWER_COOKIE_NAME: ${NEXT_PUBLIC_VIEWER_COOKIE_NAME}
+  #     NEXT_PUBLIC_PUBLIC_API_KEY = ${NEXT_PUBLIC_PUBLIC_API_KEY}
   #   healthcheck:
   #     test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
   #     interval: 30s
