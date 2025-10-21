@@ -1,0 +1,84 @@
+services:
+  apiservice_api:
+    image: loginwebinar/api-service:latest
+    container_name: apiservice_api
+    restart: unless-stopped
+    volumes:
+      - ./keys:/app/keys  # Mount the local 'keys' directory into the container
+    ports:
+      - "8080:8080"  # Expose the application port
+    environment:
+      # Optional: You can override or add environment variables here
+      NEVER_CHANGE_AFTER_INSTALLATION_32_BYTE_KEY: ${NEVER_CHANGE_AFTER_INSTALLATION_32_BYTE_KEY}
+      BUNNY_FONT_API: ${BUNNY_FONT_API}
+      GOOGLE_FONT_API: ${GOOGLE_FONT_API}
+      BLUEPRINT_DB_HOST: ${BLUEPRINT_DB_HOST}
+      BLUEPRINT_DB_PORT: ${BLUEPRINT_DB_PORT}
+      BLUEPRINT_DB_DATABASE: ${POSTGRES_DB}
+      BLUEPRINT_DB_USERNAME: ${POSTGRES_USER}
+      BLUEPRINT_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      BLUEPRINT_DB_SCHEMA: ${BLUEPRINT_DB_SCHEMA}
+      SWAGGER_KEY: ${SWAGGER_KEY}
+      SWAGGER_USERNAME: ${SWAGGER_USERNAME}
+      SWAGGER_PASSWORD: ${SWAGGER_PASSWORD}
+      APP_URL: ${APP_URL}
+      HEARTBEAT_WSURL: ${HEARTBEAT_WSURL}
+      HEARTBEAT_SCRIPT: ${HEARTBEAT_SCRIPT}
+      PORT: ${PORT}
+      APP_ENV: ${APP_ENV}
+    extra_hosts:
+      - "postgres.host:host-gateway"
+  mcpweb_app:
+    image: loginwebinar/mcp-loginwebinar:latest
+    container_name: mcpweb_app
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./keys:/app/keys
+    environment:
+      - NODE_ENV=production
+      # Add your production environment variables here
+      - NEXT_PUBLIC_URL: ${NEXT_PUBLIC_UR}
+      - NEXT_PUBLIC_V1_API_URL: ${NEXT_PUBLIC_V1_API_URL}
+      - NEXT_PUBLIC_AUTH_URL: ${NEXT_PUBLIC_AUTH_URL}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  mainweb_app:
+    image: loginwebinar/main-loginwebinar:latest
+    container_name: main_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./keys:/app/keys
+    environment:
+      - NODE_ENV=production
+      - ENV NODE_OPTIONS="--max-old-space-size=4096"
+      # Add your production environment variables here
+      - NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL}
+      - NEXT_PUBLIC_HOSTNAME: ${NEXT_PUBLIC_HOSTNAME}
+      - NEXT_PUBLIC_V1_API_URL: ${NEXT_PUBLIC_V1_API_URL}
+      - NEXT_PUBLIC_AUTH_URL: ${NEXT_PUBLIC_AUTH_URL}
+      - NEXT_PUBLIC_COOKIE_NAME: ${NEXT_PUBLIC_COOKIE_NAME}
+      - NEXT_PUBLIC_VIEWER_COOKIE_NAME: ${NEXT_PUBLIC_VIEWER_COOKIE_NAME}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
