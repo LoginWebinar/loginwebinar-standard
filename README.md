@@ -36,7 +36,7 @@ cd \
 sudo mkdir srv
 cd srv
 sudo git clone https://github.com/LoginWebinar/loginwebinar-standard.git
-sudo chown ubuntu:ubuntu -R loginwebinar
+sudo chown ubuntu:ubuntu -R loginwebinar-standard
 ```
 
 ### GENERATE PUBLIC PRIVATE KEY
