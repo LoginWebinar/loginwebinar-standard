@@ -33,8 +33,6 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
-    volumes:
-      - ./keys:/app/keys
     environment:
       NODE_ENV: production
       NODE_OPTIONS: "--max-old-space-size=4096"
