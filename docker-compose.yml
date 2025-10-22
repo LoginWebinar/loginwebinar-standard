@@ -31,6 +31,8 @@ services:
     image: loginwebinar/main-loginwebinar:latest
     container_name: mainweb_app
     restart: unless-stopped
+    volumes:
+      - ./keys:/app/keys  # Mount the local 'keys' directory into the container
     ports:
       - "3000:3000"
     environment:
