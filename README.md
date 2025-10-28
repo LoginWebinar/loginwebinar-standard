@@ -95,11 +95,18 @@ docker compose up -d
 * Run this to get any updates after the clone
 
 ```
-cd /srv/loginwebinar-stanard
+cd /srv/loginwebinar-standard
 git pull
 ```
 
+* Run this to update the application, doing this will cause a down time
 
+```
+cd /srv/loginwebinar-standard
+docker compose pull
+docker compose down
+docker compose up -d
+```
 
 
 ## Help
