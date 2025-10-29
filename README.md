@@ -77,6 +77,14 @@ Now edit the .env file and set the values as needed
 sudo nano .env
 ```
 
+## SETTING UP THE SELF UPLOAD FOLDER
+
+```
+mkdir /srv/loginwebinar-standard/uploads
+sudo chown -R 100:101 /srv/loginwebinar-standard/uploads
+sudo chmod -R 755 /srv/loginwebinar-standard/uploads
+```
+
 
 ## STARTING THE CONTAINERS
 
