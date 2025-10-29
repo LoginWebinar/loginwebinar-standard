@@ -34,7 +34,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - /srv/loginwebinar-standard/public:/usr/src/app/public/uploads
+      - /srv/loginwebinar-standard/uploads:/usr/src/app/public/uploads
     environment:
       NODE_ENV: production
       NODE_OPTIONS: "--max-old-space-size=4096"
