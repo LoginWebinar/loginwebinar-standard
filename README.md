@@ -10,6 +10,11 @@ If Postgres is installed as a system service on this server, certain configurati
 
 For instructions on configuration changes for [POSTGRES](postgres.system.configuration.md)
 
+All other services are then hosted on this one server (mainweb_app, mcpweb_app, heartbeat_srv, apiservice_srv ). 
+The apiservice_srv does not require a public domain name.
+The mainweb_app, heartbeat_srv must have public domain name with open ports to 80:443
+The mcpweb_app is a choice, you must be able to access the service within the company lan/wlan or you can assign it a public domain name. This app can then be used by your administrator from any internet connection.
+
 
 ## Getting Started
 
@@ -24,12 +29,12 @@ For instructions on configuration changes for [POSTGRES](postgres.system.configu
 ### Installing
 
 * How/where to download your program
-* Any modifications needed to be made to files/folders
+* Modifications needed to be made to files/folders
 
 ### Downloading the Installation
 
-* How to run the program
-* Step-by-step bullets
+* Fresh Installation of Ubuntu (24.04) or other Debian based linx server edition
+* Use a tunneling service such as Cloudflare Zero-trust tunnel or Tailscale Funnel
 
 ```
 cd \
@@ -60,18 +65,27 @@ This key MUST never change once you start the application.
 openssl rand -base64 32
 ```
 
-
 ## ENV FILE
 
 after cloning need to copy the .env.example file to .env
-
 
 ```
 cd /srv/loginwebinar-standard
 cp .env.example .env
 ```
 
-Now edit the .env file and set the values as needed
+Now edit the .env file and set the values as needed below:
+SITE_URL= https://(full qualified domain name)
+HEARTBEAT_WSURL=ws://(full qualified domain name)
+POSTGRES_USER   <== Must be your postgres user account>
+POSTGRES_PASSWORD <== Must be the posgres user password>
+SWAGGER_USERNAME  <== Any username you want to use to access the API documentation>
+SWAGGER_PASSWORD  <== Any password you want to use to access the API documenation>
+NEVER_CHANGE_AFTER_INSTALLATION_32_BYTE_KEY 
+MAIN_COOKIE_PREFIX  <== can be anything you choose, recommend lwmanager used by the admin users>
+VIEWER_COOKIE_PREFIX  <== can be anything you choose, recommand lwview  used by the viewers>
+PUBLIC_PEM  <== must include the entire PEM including the begining dashes ---PUBLIC PEM--- and ending dashes  >
+
 
 ```
 sudo nano .env
@@ -101,7 +115,8 @@ sudo nano default.conf
 ```
 
 go to line 11, server_name _;  replace the _ with the fully qualified domain name
-Should look like:   server_name podcast.yourdomainname.com;   <== no spaces in the domain name>
+
+Should look like:   server_name podcast.yourdomainname.com;   <== no spaces in the domain name, must end with the semi-colon>
 
 
 
