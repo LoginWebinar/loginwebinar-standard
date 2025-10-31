@@ -94,7 +94,7 @@ cd /srv/loginwebinar-standard/nginx
 cp default.conf.example default.conf
 ```
 
-Edit the default.conf file by adding the servername on line 11
+Edit the default.conf file by adding the fully qualified domain name to the server_name option on line 11
 
 ```
 sudo nano default.conf
