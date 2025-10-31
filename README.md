@@ -108,6 +108,48 @@ sudo chown -R 100:101 /srv/loginwebinar-standard/uploads
 sudo chmod -R 755 /srv/loginwebinar-standard/uploads
 ```
 
+## SETTING UP THE LOGGING FOLDER
+
+```
+mkdir /srv/loginwebinar-standard/nginx/logs
+sudo chown -R 100:101 /srv/loginwebinar-standard/nginx/logs
+sudo chmod -R 755 /srv/loginwebinar-standard/nginx/logs
+sudo touch /srv/loginwebinar-standard/nginx/logs/access.log
+sudo touch /srv/loginwebinar-standard/nginx/logs/error.log
+sudo touch /srv/loginwebinar-standard/nginx/logs/mainweb-access.log
+sudo touch /srv/loginwebinar-standard/nginx/logs/mainweb-error.log
+sudo touch /srv/loginwebinar-standard/nginx/logs/mcpweb-access.log
+sudo touch /srv/loginwebinar-standard/nginx/logs/mcpweb-error.log
+sudo chown -R 101:101 /srv/loginwebinar-standard/nginx/logs/*.log
+```
+
+Create a log rotation group
+
+```
+/srv/loginwebinar-standard/nginx/logs/*.log {
+    daily
+    missingok
+    rotate 14
+    compress
+    delaycompress
+    notifempty
+    create 0640 101 101
+    sharedscripts
+    postrotate
+        docker exec loginwebinar_nginx nginx -s reopen
+    endscript
+}
+```
+
+Add to the system logrotate
+
+```
+sudo cp /srv/loginwebinar-standard/nginx/logrotate.conf /etc/logrotate.d/nginx-docker
+sudo chmod 644 /etc/logrotate.d/nginx-docker
+```
+
+
+
 ## SETTING UP THE NGINX SERVICE
 
 Make a copy of the example default.conf file
