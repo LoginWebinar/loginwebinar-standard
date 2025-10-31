@@ -23,6 +23,7 @@ The mcpweb_app is a choice, you must be able to access the service within the co
 * Debian OS
 * Docker
 * OpenSSL
+* Postgres
 
 ### Installing
 
