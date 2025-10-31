@@ -75,6 +75,7 @@ cp .env.example .env
 ```
 
 Now edit the .env file and set the values as needed below:
+
 SITE_URL= https://(full qualified domain name)
 
 HEARTBEAT_WSURL=ws://(full qualified domain name)
