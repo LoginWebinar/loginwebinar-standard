@@ -85,6 +85,25 @@ sudo chown -R 100:101 /srv/loginwebinar-standard/uploads
 sudo chmod -R 755 /srv/loginwebinar-standard/uploads
 ```
 
+## SETTING UP THE NGINX SERVICE
+
+Make a copy of the example default.conf file
+
+```
+cd /srv/loginwebinar-standard/nginx
+cp default.conf.example default.conf
+```
+
+Edit the default.conf file by adding the servername on line 11
+
+```
+sudo nano default.conf
+```
+
+go to line 11, server_name _;  replace the _ with the fully qualified domain name
+Should look like:   server_name podcast.yourdomainname.com;   <== no spaces in the domain name>
+
+
 
 ## STARTING THE CONTAINERS
 
