@@ -76,14 +76,23 @@ cp .env.example .env
 
 Now edit the .env file and set the values as needed below:
 SITE_URL= https://(full qualified domain name)
+
 HEARTBEAT_WSURL=ws://(full qualified domain name)
+
 POSTGRES_USER   <== Must be your postgres user account>
+
 POSTGRES_PASSWORD <== Must be the posgres user password>
+
 SWAGGER_USERNAME  <== Any username you want to use to access the API documentation>
+
 SWAGGER_PASSWORD  <== Any password you want to use to access the API documenation>
+
 NEVER_CHANGE_AFTER_INSTALLATION_32_BYTE_KEY 
+
 MAIN_COOKIE_PREFIX  <== can be anything you choose, recommend lwmanager used by the admin users>
+
 VIEWER_COOKIE_PREFIX  <== can be anything you choose, recommand lwview  used by the viewers>
+
 PUBLIC_PEM  <== must include the entire PEM including the begining dashes ---PUBLIC PEM--- and ending dashes  >
 
 
