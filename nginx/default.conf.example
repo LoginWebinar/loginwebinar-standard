@@ -171,27 +171,8 @@ server {
     # File upload size
     client_max_body_size 100M;
     
-   # Handle the exact MCP endpoint - this MUST come first
+    # Handle exact /api/mcp
     location = /api/mcp {
-        # Handle without trailing slash
-        proxy_pass http://mcpweb_app;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto https;  # Important for Cloudflare
-        proxy_set_header X-API-KEY $http_x_api_key;
-        
-        # Prevent any redirects
-        proxy_redirect off;
-        
-        # MCP specific headers
-        proxy_set_header Accept "application/json";
-        proxy_set_header Content-Type "application/json";
-    }
-    
-    # Handle MCP paths with trailing parts
-    location ~ ^/api/mcp(/.*)?$ {
         proxy_pass http://mcpweb_app;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
@@ -200,18 +181,38 @@ server {
         proxy_set_header X-Forwarded-Proto https;
         proxy_set_header X-API-KEY $http_x_api_key;
         proxy_redirect off;
+        
+        # MCP specific headers
+        proxy_set_header Accept "application/json, text/event-stream";
+        proxy_set_header Content-Type "application/json";
+        
+        # Streaming support
+        proxy_buffering off;
+        proxy_cache off;
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 75s;
     }
-
-    # Other API routes (if MCP needs access to the general API)
-    location /api/ {
-        proxy_pass http://apiservice_srv;
+    
+    # Handle MCP paths with trailing parts
+    location ^~ /api/mcp/ {
+        proxy_pass http://mcpweb_app;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-API-KEY $http_x_api_key;
+        proxy_redirect off;
+        
+        # MCP specific headers
+        proxy_set_header Accept "application/json, text/event-stream";
+        proxy_set_header Content-Type "application/json";
+        proxy_buffering off;
+        proxy_cache off;
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 75s;
     }
-    
+
     # Everything else goes to mcpweb_app
     location / {
         proxy_pass http://mcpweb_app;
@@ -224,4 +225,5 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
     }
+
 }
