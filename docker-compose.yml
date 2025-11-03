@@ -45,7 +45,7 @@ services:
     extra_hosts:
       - "postgres.host:host-gateway"
   mainweb_app:
-    image: loginwebinar/mainwebapp:latest
+    image: loginwebinar/mainapp:latest
     container_name: mainweb_app
     restart: unless-stopped
     expose:
@@ -73,7 +73,7 @@ services:
         max-size: "10m"
         max-file: "3"
   mcpweb_app:
-    image: loginwebinar/mcpwebapp:latest
+    image: loginwebinar/mcpapp:latest
     container_name: mcpweb_app
     restart: unless-stopped
     expose:
