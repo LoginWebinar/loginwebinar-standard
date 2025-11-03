@@ -34,7 +34,7 @@ services:
     volumes:
       - ./keys:/app/keys
     ports:
-      - "127.0.0.1:8082:8082"
+      - "localhost:8082:8082"
     environment:
       GIN_MODE: release
       POSTGRES_DB_HOST: ${POSTGRES_DB_HOST}
