@@ -9,7 +9,6 @@ services:
       - "8080"  # Expose the application port
     environment:
       # Optional: You can override or add environment variables here
-      GIN_MODE: release
       NEVER_CHANGE_AFTER_INSTALLATION_32_BYTE_KEY: ${NEVER_CHANGE_AFTER_INSTALLATION_32_BYTE_KEY}
       BUNNY_FONT_API: ${BUNNY_FONT_API}
       GOOGLE_FONT_API: ${GOOGLE_FONT_API}
@@ -36,7 +35,7 @@ services:
     ports:
       - "127.0.0.1:8082:8082"
     environment:
-      GIN_MODE: release
+      SITE_URL: ${SITE_URL}
       POSTGRES_DB_HOST: ${POSTGRES_DB_HOST}
       POSTGRES_DB_PORT: ${POSTGRES_DB_PORT}
       POSTGRES_DB_SCHEMA: ${POSTGRES_DB_SCHEMA}
