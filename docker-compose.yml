@@ -1,7 +1,7 @@
 services:
-  apiservice_srv:
-    image: loginwebinar/api-service:latest
-    container_name: apiservice_srv
+  apiserver_srv:
+    image: loginwebinar/apiserver:latest
+    container_name: apiserver_srv
     restart: unless-stopped
     volumes:
       - ./keys:/app/keys  # Mount the local 'keys' directory into the container
@@ -26,8 +26,26 @@ services:
       SITE_URL: ${SITE_URL}
     extra_hosts:
       - "postgres.host:host-gateway"
+  heartbeat_srv:
+    image: loginwebinar/heartbeat:latest
+    container_name: heartbeat_srv
+    restart: unless-stopped
+    volumes:
+      - ./keys:/app/keys
+    expose:
+      - "8082"
+    environment:
+      POSTGRES_DB_HOST: ${POSTGRES_DB_HOST}
+      POSTGRES_DB_PORT: ${POSTGRES_DB_PORT}
+      POSTGRES_DB_SCHEMA: ${POSTGRES_DB_SCHEMA}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      HEARTBEAT_PORT: ${HEARTBEAT_PORT}
+    extra_hosts:
+      - "postgres.host:host-gateway"
   mainweb_app:
-    image: loginwebinar/main-loginwebinar:latest
+    image: loginwebinar/mainwebapp:latest
     container_name: mainweb_app
     restart: unless-stopped
     expose:
@@ -55,7 +73,7 @@ services:
         max-size: "10m"
         max-file: "3"
   mcpweb_app:
-    image: loginwebinar/mcp-loginwebinar:latest
+    image: loginwebinar/mcpwebapp:latest
     container_name: mcpweb_app
     restart: unless-stopped
     expose:
@@ -91,5 +109,6 @@ services:
     depends_on:
       - mainweb_app
       - mcpweb_app
-      - apiservice_srv
+      - apiserver_srv
+      - heartbeat_srv
     restart: unless-stopped

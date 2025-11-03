@@ -6,8 +6,12 @@ upstream mcpweb_app {
     server mcpweb_app:3000;
 }
 
-upstream apiservice_srv {
-    server apiservice_srv:8080;
+upstream apiserver_srv {
+    server apiserver_srv:8080;
+}
+
+upstream heartbeat_srv {
+    server heartbeat_srv:8082;
 }
 
 log_format detailed '$remote_addr - $remote_user [$time_local] '
@@ -163,4 +167,24 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 
+}
+
+server {
+    listen 80;
+    server_name ws.yourdomain.com;
+
+    location /heartbeat/ {
+        proxy_pass http://heartbeat_srv;
+        
+        # REQUIRED for WebSocket
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        
+        # Recommended for stable connections
+        proxy_read_timeout 86400s; # Adjust timeout for long-lived connections
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
 }
