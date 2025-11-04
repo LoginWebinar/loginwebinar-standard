@@ -24,6 +24,7 @@ services:
       HEARTBEAT_WSURL: ${HEARTBEAT_WSURL}
       API_HTTP_PORT: ${API_HTTP_PORT}
       SITE_URL: ${SITE_URL}
+      VIEWER_COOKIE_PREFIX: ${VIEWER_COOKIE_PREFIX}
     extra_hosts:
       - "postgres.host:host-gateway"
   heartbeat_srv:
